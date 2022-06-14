@@ -8,6 +8,6 @@ flags:
 goos: linux
 goarch: amd64
 main: ./main.go
-binary: ko_{{ .Env.Version }}_Linux_x86_64
+binary: ko_{{ .Env.VERSION }}_Linux_x86_64
 ldflags:
-  - "-s -w -X github.com/google/ko/pkg/commands.Version={{ .Env.Version }}"
+  - "-s -w -X github.com/google/ko/pkg/commands.Version={{ .Env.VERSION }}"
