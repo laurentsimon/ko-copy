@@ -131,7 +131,7 @@ func (tsa *tokenSourceAuth) Authorization() (*authn.AuthConfig, error) {
 //
 // {
 //   "credential": {
-//
+//     "access_token": "ya29.abunchofnonsense",
 //     "token_expiry": "2018-12-02T04:08:13Z"
 //   }
 // }
