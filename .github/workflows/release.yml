@@ -52,22 +52,9 @@ jobs:
     permissions:
       contents: write
     steps:
-      # Download assets from the release.
-      - name: Download assets
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-
-          gh release download "$GITHUB_REF_NAME" -p "*.tar.gz"
-          gh release download "$GITHUB_REF_NAME" -p "attestation.intoto.jsonl"
-
-      # Verify the assets.
-      - name: Verify binaries
-        env:
-          CHECKSUMS: ${{ needs.goreleaser.outputs.hashes }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PROVENANCE: "${{ needs.provenance.outputs.attestation-name }}"
+      # Note: this will be replaced with the GHA in the future.
+      - name: Install the verifier
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
 
@@ -81,7 +68,22 @@ jobs:
               echo "error: expected $EXPECTED_HASH, computed $COMPUTED_HASH"
               exit 1
           fi
-          
+
+      - name: Download assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          gh release download "$GITHUB_REF_NAME" -p "*.tar.gz"
+          gh release download "$GITHUB_REF_NAME" -p "attestation.intoto.jsonl"
+
+      - name: Verify assets
+        env:
+          CHECKSUMS: ${{ needs.goreleaser.outputs.hashes }}
+          PROVENANCE: "${{ needs.provenance.outputs.attestation-name }}"
+        run: |
+          set -euo pipefail
 
           # Verify the binaries.
           checksums=$(echo "$CHECKSUMS" | base64 -d)
