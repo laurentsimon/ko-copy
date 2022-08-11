@@ -75,8 +75,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          gh release download "$GITHUB_REF_NAME" -p "*.tar.gz"
-          gh release download "$GITHUB_REF_NAME" -p "attestation.intoto.jsonl"
+          gh -R "$GITHUB_REPOSITORY" release download "$GITHUB_REF_NAME" -p "*.tar.gz"
+          gh -R "$GITHUB_REPOSITORY" release download "$GITHUB_REF_NAME" -p "attestation.intoto.jsonl"
 
       - name: Verify assets
         env:
