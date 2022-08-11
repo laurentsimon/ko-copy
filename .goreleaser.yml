@@ -15,19 +15,10 @@ builds:
   ldflags:
   - "-s -w -X github.com/google/ko/pkg/commands.Version={{.Version}}"
   goos:
-  - windows
   - linux
-  - darwin
   goarch:
   - amd64
-  - arm64
-  - s390x
-  - 386
-  - mips64le
-  - ppc64le
-  ignore:
-      - goos: linux
-        goarch: amd64
+
 archives:
 - replacements:
     darwin: Darwin
