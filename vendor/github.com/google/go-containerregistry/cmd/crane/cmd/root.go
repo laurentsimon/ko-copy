@@ -20,6 +20,7 @@ import (
 	"path/filepath"
 
 	"github.com/docker/cli/cli/config"
+	"github.com/google/go-containerregistry/internal/cmd"
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/google/go-containerregistry/pkg/logs"
 	"github.com/google/go-containerregistry/pkg/v1/remote"
@@ -38,6 +39,7 @@ var Root = New(use, short, []crane.Option{})
 func New(use, short string, options []crane.Option) *cobra.Command {
 	verbose := false
 	insecure := false
+	ndlayers := false
 	platform := &platformValue{}
 
 	root := &cobra.Command{
@@ -55,6 +57,9 @@ func New(use, short string, options []crane.Option) *cobra.Command {
 			if insecure {
 				options = append(options, crane.Insecure)
 			}
+			if ndlayers {
+				options = append(options, crane.WithNondistributable())
+			}
 			if Version != "" {
 				binary := "crane"
 				if len(os.Args[0]) != 0 {
@@ -65,12 +70,13 @@ func New(use, short string, options []crane.Option) *cobra.Command {
 
 			options = append(options, crane.WithPlatform(platform.platform))
 
-			transport := remote.DefaultTransport.Clone()
+			transport := remote.DefaultTransport.(*http.Transport).Clone()
 			transport.TLSClientConfig = &tls.Config{
 				InsecureSkipVerify: insecure, //nolint: gosec
 			}
 
 			var rt http.RoundTripper = transport
+
 			// Add any http headers if they are set in the config file.
 			cf, err := config.Load(os.Getenv("DOCKER_CONFIG"))
 			if err != nil {
@@ -88,17 +94,19 @@ func New(use, short string, options []crane.Option) *cobra.Command {
 
 	commands := []*cobra.Command{
 		NewCmdAppend(&options),
+		NewCmdAuth(options, "crane", "auth"),
 		NewCmdBlob(&options),
-		NewCmdAuth("crane", "auth"),
-		NewCmdCatalog(&options),
+		NewCmdCatalog(&options, "crane"),
 		NewCmdConfig(&options),
 		NewCmdCopy(&options),
 		NewCmdDelete(&options),
 		NewCmdDigest(&options),
+		cmd.NewCmdEdit(&options),
 		NewCmdExport(&options),
 		NewCmdFlatten(&options),
 		NewCmdList(&options),
 		NewCmdManifest(&options),
+		NewCmdMutate(&options),
 		NewCmdOptimize(&options),
 		NewCmdPull(&options),
 		NewCmdPush(&options),
@@ -106,13 +114,13 @@ func New(use, short string, options []crane.Option) *cobra.Command {
 		NewCmdTag(&options),
 		NewCmdValidate(&options),
 		NewCmdVersion(),
-		NewCmdMutate(&options),
 	}
 
 	root.AddCommand(commands...)
 
 	root.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Enable debug logs")
 	root.PersistentFlags().BoolVar(&insecure, "insecure", false, "Allow image references to be fetched without TLS")
+	root.PersistentFlags().BoolVar(&ndlayers, "allow-nondistributable-artifacts", false, "Allow pushing non-distributable (foreign) layers")
 	root.PersistentFlags().Var(platform, "platform", "Specifies the platform in the form os/arch[/variant][:osversion] (e.g. linux/amd64).")
 
 	return root
