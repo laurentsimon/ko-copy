@@ -5,7 +5,6 @@ go 1.16
 require (
 	github.com/Azure/azure-sdk-for-go v65.0.0+incompatible // indirect
 	github.com/Azure/go-autorest/autorest/adal v0.9.20 // indirect
-	github.com/BurntSushi/toml v1.1.0 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.15.9 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.5 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.5 // indirect
@@ -18,14 +17,14 @@ require (
 	github.com/go-openapi/analysis v0.21.3 // indirect
 	github.com/go-training/helloworld v0.0.0-20200225145412-ba5f4379d78b
 	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
-	github.com/google/go-cmp v0.5.8
+	github.com/google/go-cmp v0.5.9
 	github.com/google/go-containerregistry v0.9.0
 	github.com/klauspost/compress v1.15.5 // indirect
 	github.com/letsencrypt/boulder v0.0.0-20220525221457-11544756bbe8 // indirect
 	github.com/opencontainers/image-spec v1.0.3-0.20220114050600-8b9d41f48198
 	github.com/sigstore/cosign v1.9.0
 	github.com/sigstore/rekor v0.7.0 // indirect
-	github.com/spf13/cobra v1.4.0
+	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.12.0
 	go.mongodb.org/mongo-driver v1.9.1 // indirect
@@ -40,5 +39,5 @@ require (
 	gopkg.in/ini.v1 v1.66.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/apimachinery v0.24.1
-	sigs.k8s.io/kind v0.14.0
+	sigs.k8s.io/kind v0.24.0
 )
