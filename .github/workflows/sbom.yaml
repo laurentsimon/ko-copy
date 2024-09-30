@@ -21,7 +21,7 @@ jobs:
         run: |
           go install github.com/google/go-containerregistry/cmd/registry@latest
           registry &
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.2.0
 
       - name: Generate
         run: |
@@ -45,7 +45,7 @@ jobs:
         run: |
           go install github.com/google/go-containerregistry/cmd/registry@latest
           registry &
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.2.0
 
       - name: Install CycloneDX
         run: |
@@ -80,7 +80,7 @@ jobs:
         run: |
           go install github.com/google/go-containerregistry/cmd/registry@latest
           registry &
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.2.0
 
       - name: Install SPDX Tools
         run: |
